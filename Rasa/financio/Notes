@@ -1,0 +1,12 @@
+# Download spacy trained models for names
+python -m spacy download en_core_web_md
+
+# Link the models
+python -m spacy link en_core_web_md en
+
+# Download duckling for extracting money, numbers & dates
+# It runs as a separate service in it's own contianer or server
+Set http://duckling.rasa.com:8000 in the config.yml
+
+#run actions with
+rasa run actions --port 5056

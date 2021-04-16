@@ -1,0 +1,30 @@
+Volumes are supposed to be managed by Docker and bind mounts are meant to be managed by the developer
+
+# Check volumes
+docker volume ls
+docker volume inspect <volume_name>
+
+# Clear out unused volumes especially anonymous ones
+docker volume prune # all at once
+docker volume rm <volume_name> # individually
+
+# Types of volumes and how to create them
+1. Anonymous Volume Within a Dockerfile
+    - VOLUME [ "absolute_path_in_container" ] # Anonymous
+        - A great use case for this is if you're using a bind mount for your source code,
+        and the node_modules folder is getting overwritten and thrown out by it,
+        you can add an anonymous folder to ensure the node_modules/ is persistent
+
+2. Named volume - Great for having data persist across container removal that we don't need to access on host
+    1. docker run -v name_of_volume_on_host:/path_in_container
+    2. docker volume create <name>
+    
+    
+
+3. Bind mounts
+    - docker run -v <absolute_path_on_host_to_dir>:/absolute_path_in_container[:optional directory permissions like ro]
+
+Bind Mount short cuts to current directory
+    - macOS / Linux: -v $(pwd):/app
+    - Windows: -v "%cd%":/app
+

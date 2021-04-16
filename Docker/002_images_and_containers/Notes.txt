@@ -1,0 +1,43 @@
+What is an image? An image is a saved container that's stored in a repository - a template persay
+What is a container? A container is an instantiated image
+
+Command: docker run node
+Description: This will look for an image locally to run or fallback on pulling an IMAGE from docker hub (the default repository) and run it
+Flags: -it --> basically this allows you to connect to the container interactively in a shell
+    -i = --interactive  
+    -t =--tty (allocate a psudo-tty)
+    -p <hostport>:<containerport>
+    -rm to automatically delete on exit
+    -d to run in detach mode
+    --name to set a custom name
+
+docker ps -a 
+  - to see all docker containers (running and not running)
+
+docker rm <container_name>
+
+docker images 
+  - to see all images
+docker rmi <image_id>
+  - to remove a docker image, have to remove all stopped containers of it first
+
+docker image prune  to remove all unused images
+
+docker image inspect <image_id> 
+  - to see image metadata
+
+docker cp <source> <destination>
+  - to copy files into a container or out of a container
+  - examples
+    - docker cp dummy/ boring_vaughan:/test 
+    - docker cp boring_vaughan:/test dummy/
+
+# DOCKER HUB
+Docker push Imagename
+Docker pull Imagename
+
+# Rename an image, can add a column after newname to set a tag
+Docker tag oldname newname
+
+# Required 1st time only
+Docker login
