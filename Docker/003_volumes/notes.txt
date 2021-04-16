@@ -1,3 +1,4 @@
+### Volumes and Bind Mounts ###
 Volumes are supposed to be managed by Docker and bind mounts are meant to be managed by the developer
 
 # Check volumes
@@ -18,13 +19,24 @@ docker volume rm <volume_name> # individually
 2. Named volume - Great for having data persist across container removal that we don't need to access on host
     1. docker run -v name_of_volume_on_host:/path_in_container
     2. docker volume create <name>
-    
-    
 
 3. Bind mounts
     - docker run -v <absolute_path_on_host_to_dir>:/absolute_path_in_container[:optional directory permissions like ro]
 
-Bind Mount short cuts to current directory
-    - macOS / Linux: -v $(pwd):/app
-    - Windows: -v "%cd%":/app
+    Bind Mount short cuts to current directory
+        - macOS / Linux: -v $(pwd):/app
+        - Windows: -v "%cd%":/app
 
+
+### Arguments & Environment Variables ###
+Arguments are build time variables and Environment vars are available at Runtime
+
+Arguments: 
+    - Available inside Dockerfile, NOT accessible in CMD or app code
+    - Set on an image build (docker build) via --build-arg flag
+
+ENV:
+    - Available inside Dockerfile & in app code
+    - Set via ENV in Dockerfile or via --env on docker run
+    - When set with docker run vs dockerfile, the docker run flag is prioritized
+    - Can only be set in a file as long as you use the --env-file <relative_env_file_path> flag with docker run
