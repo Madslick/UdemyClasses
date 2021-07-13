@@ -1,0 +1,5 @@
+# build context property sets the root path for the dockerfile when looking for files to COPY or RUN with #
+see docker-compose nginx server service for example
+
+# How to only start certain docker-compose services #
+docker-compose up <service_name1> <service_name2> <etc>

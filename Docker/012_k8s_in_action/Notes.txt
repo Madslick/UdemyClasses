@@ -1,0 +1,47 @@
+Objects: Declared imperatively or declaratively
+    - Pods
+    - Deployments
+    - Services
+    - Volumes
+
+
+Pods: Run Containers
+    - Contains and runs one o rmultiple containers (most often 1 container per pod)
+    - Pods contain shared resources for all pod containers (volumes)
+    - Has a cluster-internal IP by default but can communicate with other containers in the pod by localhost
+    - Managed by Controllers (Deployments)
+
+    Check Pods: kubectl get pods
+
+Deployments: Controls Pods
+    - We configure desired state with deployments and kubernetes changes the actual state to get there.
+        - Define which pods and containers to run and the number of instances
+    - Deployments can be paused, deleted and rolled back
+    - Deployments can be scaled dynamically (and automatically based on metrics)
+
+
+    Create a Deployment: kubectl create deployment first-app --image=sudojoe/k8s-first-app
+        - image can't be local, has to be on a repo
+
+    Check Deployments: kubectl get deployments
+
+    Scale a Deployment: kubectl scale deployment/first-app --replicas=3
+
+    Update the deployment with new code!
+        1. Edit the code
+        2. Create a new image with a tag version (without the version the set image command won't update)
+        3. Push to docker hub
+        4. kubectl set image deployment/first-app k8s-first-app=sudojoe/k8s-first-app:2
+            - you can see we use the name of the image in docker hub as the flag and then pass the new repo/tag:version
+            - you should see deployment.apps/first-app image updated if it worked correctly
+        5. kubectl rollout status deployment/first-app
+
+Services: Exposes pods to the cluster or externally
+    - Pods have an internal IP by default but the problem is these IPs change all the time
+    - Services group pods with a shared IP that persists.
+    - Allow external access to pods if desired. Default is internal only
+
+    Create Service: kubectl expose deployment first-app --port 8080 --type=LoadBalancer
+        - Cloud Provisioner would automatically  create the external ip but since i'm running on minikube I had to run minikube service first-app
+
+    Get Services: kubectl get services

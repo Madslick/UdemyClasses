@@ -8,4 +8,8 @@ FLAGS: -p for exposing a port
 docker start <container_id> | <container_name>
 FLAGS: -ai  --> -a for attach mode and -i for interactive
 
+docker rm <container_id> | <container_name>
+
+docker rmi <image_id> | <image_name>
+
 docker logs <container_id> | <container_name>

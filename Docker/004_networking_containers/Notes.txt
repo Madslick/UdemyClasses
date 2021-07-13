@@ -1,0 +1,5 @@
+host.docker.internal is the address to hit the host like localhost 
+
+docker network create my_network
+docker run --network my_network
+docket network connect NETWORK CONTAINER

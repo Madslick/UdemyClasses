@@ -1,0 +1,54 @@
+- Biggest differences between docker locally and in production is that you need to override the environment variables
+and learn how the provider deals with networking between containers because the container name may not route like docker
+does locally.
+    - You don't want bind mounts or anonymous volumes. Copy should be used in image creation so the image is already loaded with the source code needed
+    - Your CMD or entry point may change between prod and dev. I'm not totally sure the best way to do this with angular and or flask at the moment.
+
+###############
+### AWS EC2 ###
+###############
+- SSH COMMAND FOR ec2 instance:
+    ssh -i "/d/Udemy/Docker/009_deploying_docker_containers/keys/node-dep-example.pem" ec2-user@ec2-13-57-18-200.us-west-1.compute.amazonaws.com
+
+- Install docker on ec2 amazon linux vm
+    sudo amazon-linux-extras install docker
+
+
+Push an image to docker hub
+    - create repo in docker hub
+    - build an image on your machine
+        docker build -t node-dep-example .
+    - tag it with the repo name 
+        docker tag node-dep-example sudojode/node-dep-example-1
+    - login to docker hub
+        docker login 
+    - push to docker hub
+        docker push sudojoe/node-dep-example-1
+
+To update the container with new changes:
+    - build the new image locally
+    - Push the newest image to docker hub like we did before
+    - On the production host, Stop & delete the current running docker container
+    - on the production host, run docker pull on the repo/image from docker hub to get the latest changes
+        sudo docker pull sudojoe/node-dep-example-1
+    - re-run the docker container with the new image
+
+
+##################
+### AMAZON ECS ###
+##################
+ECS is for using a managed container service where you tell amazon how to run your containers and they maintain the machines that run the container. You just worry about your container definitions
+EFS is elastic file system where you can create docker volumes as long as you create a special security group that allows inbound requests from your ECS cluster.
+
+
+##########################
+### Multi Stage Builds ###
+##########################
+If your container for production requires a build step, for example angular/react, and you need to extract the optimized files from the build, you want to use multi-stage builds.
+
+Basically you use multiple from statements:
+1) The first from will be responsible for creating the environment required to generate the optimized files and finishes with something like RUN ng build --prod
+2) The next from will be the container image needed to serve that application and the next line will be COPY --from=<builder container> src definitions
+    - Now the rest of these instructions should be configuring the server container to serve the production files
+
+docker build -f frontend/Dockerfild.prod ./frontend

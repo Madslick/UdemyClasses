@@ -1,0 +1,19 @@
+### USE CASES ###
+Say you don't want to install npm on your host machine,
+you can create a node container with a bind mount that can run npm init 
+to instantiate the project without installing node on the host
+
+# Ways to run commands in a container
+docker exec <container name or id> COMMAND
+docker run <image_name> COMMAND
+docker exec container npm init
+docker run -it container npm init
+
+## ENTRYPOINT ##
+Similar to CMD, set as last command in the Dockerfile
+Entrypoint allows you to declare the command that can be called inside the container.
+This way the container is restricted to just a singular command but is flexible.
+Can still be run with different flags, options and arguments
+
+## DOCKER COMPOSE ##
+You can use docker-compose run for utility containers because up is mainly used to bring applications up

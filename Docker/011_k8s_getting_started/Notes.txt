@@ -1,0 +1,25 @@
+What is Kubernetes?
+Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications without being tied to any cloud provider.
+It's kidn of like docker-compose for multiple machines
+
+Important details
+    * When a container crashes, we want a new container to automatically take it's place
+    * Might need more containers during a traffic spike
+    * Evenly distribute traffic amongst containers
+    * Write configuration in a standardized format for any provider
+        - Flexible enough to allow specific configurations for specific providers when needed
+
+
+Terms
+    * Pod (Container) - smallest possible un it in k8s. It holds a container or multiple containers and is responsible for making sure the container(s) run.
+    * Worker Node - Pods run on a "Worker Node." VM running the pods basically. 
+        - Kubelet - A small service running on worker nodes that handles communication between master node and worker node
+        - kube-proxy - a small service for handling traffic for the worker node: e.g. whitelisted blacklisted io to the pods.
+    * Proxy/Config - Running on the worker node, it controls network traffic of the pods on that worker node.
+    * Master Node 
+        - Runs the control plane which replaces and shuts off pods/containers.
+        - API server: counterpoint to the kubelet services running on the worker nodes.
+        - Scheduler - responsible for watching pods and choosing worker nodes on which new pods should be created (responsible for telling the api server what to tell the worker nodes)
+        - Kube-Controller-Manager: Watches/controls worker nodes overall, correct number of pods running
+        - Cloud-Controller-Manager: Same thing as Kube-C-M but is cloud provider specific
+    * Cluster - A set of node machines which are running the containerized app (worker nodes) or control other nodes (master node)

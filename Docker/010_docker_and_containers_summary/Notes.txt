@@ -1,0 +1,5 @@
+Core Concepts
+Containers are isolated boxes that contain the code and environment to run that code. Single task focused. Shareable/reproducible. Stateless (+ volumes)
+
+Images are the blueprints for spinning up containers. They contain code + environment and are read only. Can be built + shared
+

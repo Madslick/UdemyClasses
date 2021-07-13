@@ -1,0 +1,11 @@
+
+### FRONTEND ###
+docker build -t mca_frontend
+docker run --name mca_goals_frontend -v /app/node_modules -v D:\Udemy\Docker\005_multi_container_apps\multi-01-starting-setup\frontend:/app -p 3000:3000 -it  mca_frontend
+
+### BACKEND ###
+docker build -t mca_backend
+docker run --name mca_goals_backend --network mca_net -v /app/node_modules -v /app/logs -v D:\Udemy\Docker\005_multi_container_apps\multi-01-starting-setup\backend:/app -d -p 80:80 mca_backend
+
+### MONGO ###
+docker run --network mca_net -v mca_mongo:/data/db --name mca_mongo -e MONGO_INITDB_ROOT_USERNAME=mca -e MONGO_INITDB_ROOT_PASSWORD=mca -d mongo:latest
