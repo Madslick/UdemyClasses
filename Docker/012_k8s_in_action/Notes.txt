@@ -1,47 +1,81 @@
-Objects: Declared imperatively or declaratively
+K8S Documentation: https://kubernetes.io/docs/reference/kubernetes-api/
+
+Approaches:
+    Imperative: Running commands in the CLI to create the desired state
+        - Can still run imperative commands if you set clusters up declaratively
+    Declarative: Write down the deployment details into files to create the desired state (kubectl apply -f config.yaml)
+        - You can have multiple resource definitions in one file by separating them with a new line of --- 
+
+        Labels: You can assign properties to the resources being marked up.
+        Selector: You can apply configuration to resources based on labels with matchLabels or matchExpressions.
+
+        Commands
+            Run instructions From File: kubectl apply -f <yamlfilepath>
+
+Objects:
     - Pods
     - Deployments
     - Services
     - Volumes
 
+    Commands:
+        kubectl delete <objecttype> <objectname>
+        kubectl delete -f <yaml_file_path>
+        kubectl delete <objects comma separated> -l <labelkey>=<labelvalue>
+            - kubectl delete deployments,services -l group=dev
 
 Pods: Run Containers
-    - Contains and runs one o rmultiple containers (most often 1 container per pod)
-    - Pods contain shared resources for all pod containers (volumes)
-    - Has a cluster-internal IP by default but can communicate with other containers in the pod by localhost
-    - Managed by Controllers (Deployments)
+    Details:
+        - Contains and runs one o rmultiple containers (most often 1 container per pod)
+        - Pods contain shared resources for all pod containers (volumes)
+        - Has a cluster-internal IP by default but can communicate with other containers in the pod by localhost
+        - Managed by Controllers (Deployments)
 
-    Check Pods: kubectl get pods
+    Commands
+        Check Pods: kubectl get pods
 
 Deployments: Controls Pods
-    - We configure desired state with deployments and kubernetes changes the actual state to get there.
-        - Define which pods and containers to run and the number of instances
-    - Deployments can be paused, deleted and rolled back
-    - Deployments can be scaled dynamically (and automatically based on metrics)
+    Details:
+        - We configure desired state with deployments and kubernetes changes the actual state to get there.
+            - Define which pods and containers to run and the number of instances
+        - Deployments can be paused, deleted and rolled back
+        - Deployments can be scaled dynamically (and automatically based on metrics)
 
+    Commands:
+        Create a Deployment: kubectl create deployment first-app --image=sudojoe/k8s-first-app
+            - image can't be local, has to be on a repo
 
-    Create a Deployment: kubectl create deployment first-app --image=sudojoe/k8s-first-app
-        - image can't be local, has to be on a repo
+        Check Deployments: kubectl get deployments
 
-    Check Deployments: kubectl get deployments
+        Scale a Deployment: kubectl scale deployment/first-app --replicas=3
 
-    Scale a Deployment: kubectl scale deployment/first-app --replicas=3
+        Update the deployment with new code!
+            1. Edit the code
+            2. Create a new image with a tag version (without the version the set image command won't update)
+            3. Push to docker hub
+            4. kubectl set image deployment/first-app k8s-first-app=sudojoe/k8s-first-app:2
+                - you can see we use the name of the image in docker hub as the flag and then pass the new repo/tag:version
+                - you should see deployment.apps/first-app image updated if it worked correctly
+            5. kubectl rollout status deployment/first-app
 
-    Update the deployment with new code!
-        1. Edit the code
-        2. Create a new image with a tag version (without the version the set image command won't update)
-        3. Push to docker hub
-        4. kubectl set image deployment/first-app k8s-first-app=sudojoe/k8s-first-app:2
-            - you can see we use the name of the image in docker hub as the flag and then pass the new repo/tag:version
-            - you should see deployment.apps/first-app image updated if it worked correctly
-        5. kubectl rollout status deployment/first-app
+        Rollback a Failed Deployment: 
+            kubectl rollout undo deployment/first-app
+                - This will rollback to latest revision
+            kubectl rollout undo deployment/first-app --to-revision=1
+                - This will rollback to a specific revision
+
+        Check Deployment History: 
+            For a list of deployment revisions: kubectl rollout history deployment/first-app
+            For more details on a specific revision: kubectl rollout history deployment/first-app --revision=1
 
 Services: Exposes pods to the cluster or externally
-    - Pods have an internal IP by default but the problem is these IPs change all the time
-    - Services group pods with a shared IP that persists.
-    - Allow external access to pods if desired. Default is internal only
+    Details
+        - Pods have an internal IP by default but the problem is these IPs change all the time
+        - Services group pods with a shared IP that persists.
+        - Allow external access to pods if desired. Default is internal only
 
-    Create Service: kubectl expose deployment first-app --port 8080 --type=LoadBalancer
-        - Cloud Provisioner would automatically  create the external ip but since i'm running on minikube I had to run minikube service first-app
+    Commands
+        Create Service: kubectl expose deployment first-app --port 8080 --type=LoadBalancer
+            - Cloud Provisioner would automatically  create the external ip but since i'm running on minikube I had to run minikube service first-app
 
-    Get Services: kubectl get services
+        Get Services: kubectl get services

@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: second-app-deployment
+  labels: 
+    group: dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: second-app
+      tier: backend
+    # matchExpressions:
+    #   - { key: app, operator: In, values: [second-app, first-app]}
+  template:  # Template of a deployment always describes a pod
+    metadata: 
+      labels: 
+        app: second-app
+        tier: backend
+    spec:
+      containers: 
+        - name: second-node
+          image: sudojoe/k8s-first-app:3
+          livenessProbe: 
+            httpGet: 
+              path: /
+              port: 8080
+            periodSeconds: 3
+            initialDelaySeconds: 5
