@@ -3,3 +3,4 @@ Containers are isolated boxes that contain the code and environment to run that 
 
 Images are the blueprints for spinning up containers. They contain code + environment and are read only. Can be built + shared
 
+Example of a multi-stage build dockerfile is here. Refer to module 9 for more explanations on multistage dockerfiles

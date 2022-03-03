@@ -1,0 +1,19 @@
+Volume Types
+Pod Volumes
+    emptyDir type of volume lives on as long as the pod lives. Survives container restarts
+        - Not great for loadbalanced pods bc it only lives on 1 pod
+
+    hostPath: Mounts to the host rather than the container
+
+    CSI is a volume type that is very dynamic. You can implement a driver interface to create an integration into it.
+
+Persistent Volumes
+    This type of volume is completely independent of the Pod lifecycle. The node could crash, the pod could be deleted and containers restarted/deleted and the persistent volume would persist.
+
+    Setup
+        you need to deploy a PersistentVolume resource along with a PersistentVolumeClaim resource. Now your Deployment can use the volume type persistentVolumeClaim to utilize the PV.
+
+Environment Variables
+    You can either use environment variables directly in the Deployment resource with the env property in containers.spec 
+    OR
+    You can setup a ConfigMap resource that abstracts the environment variable definitions away from the Deployment resource configuration.

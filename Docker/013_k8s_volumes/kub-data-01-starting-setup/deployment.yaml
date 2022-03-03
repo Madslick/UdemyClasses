@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: story
+  template: 
+    metadata:
+      labels:
+        app: story
+    spec: 
+      containers:
+        - name: story
+          image: sudojoe/kub-013-data-demo:0.2
+          env:
+            # - name: STORY_FOLDER
+            #   value: story
+            - name: STORY_FOLDER
+              valueFrom: 
+                configMapKeyRef: 
+                  name: data-store-env
+                  key: folder
+          volumeMounts: 
+            - mountPath: /app/story
+              name: story-volume
+          
+      volumes:
+        - name: story-volume
+          persistentVolumeClaim:
+            claimName: host-pvc

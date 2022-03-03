@@ -1,0 +1,14 @@
+Within-Pod Communication
+    Localhost can be used inside a pod to communicate to another container
+
+Services
+    Used for pod-to-pod communication
+
+    type: ClusterIP | LoadBalancer | NodePort | ExternalName
+        * ClusterIP: Only reachable within the cluster. Externally blocked
+        * LoadBalancer: The most common. Externally load balance with the cloud providers load balancing mechanism.
+        * NodePort: Proxies a port on each node into your Services
+        * ExternalName: Maps a Service to a DNS name instead of a typical selector. Cluster DNS Service returns a CNAME record with the hostname value
+            - Accessing the service normally by it's name works but the crucial difference is redirection happens at the DNS level rather than via proxying or forwarding
+Ingress
+    Used to expose ports outside the kubernetes cluster

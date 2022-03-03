@@ -47,6 +47,8 @@ Deployments: Controls Pods
 
         Check Deployments: kubectl get deployments
 
+        Connect to shell: kubectl exec --stdin --tty <pod> -- /bin/bash
+
         Scale a Deployment: kubectl scale deployment/first-app --replicas=3
 
         Update the deployment with new code!
