@@ -4,6 +4,9 @@ Within-Pod Communication
 Services
     Used for pod-to-pod communication
 
+    Can be accessed from other pods by <service_name>.<namespace>.svc.cluster.local 
+        - forgot what cluster.local is called. I think it's like the h
+
     type: ClusterIP | LoadBalancer | NodePort | ExternalName
         * ClusterIP: Only reachable within the cluster. Externally blocked
         * LoadBalancer: The most common. Externally load balance with the cloud providers load balancing mechanism.

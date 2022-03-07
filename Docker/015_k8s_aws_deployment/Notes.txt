@@ -1,0 +1,45 @@
+Deploying K8S to AWS EKS
+1. Create an EKS cluster.
+    a. Requires creating a VPC with AWS CloudFormation (https://docs.aws.amazon.com/eks/latest/userguide/creating-a-vpc.html#create-vpc)
+        i. Followed public & private subnets and went with ipv4
+    b. Requires creating an IAM role with permissions for EKS - Cluster
+
+2. Connect desktop kubectl command to AWS EKS Cluster
+    a. Installed and configured AWS cli
+        i. Download security credentials from account name in top right -> Security credentials
+        i. ran command "aws configure" and used the creds from previous step to get it setup
+    b. ran command "aws eks update-kubeconfig --name kube-dep-demo --region us-west-1
+        i. This updates the ~/.kube/config file with the metadata to connect with the AWS EKS cluster
+
+3. Deploy K8S Worker Nodes
+    a. Add Node Group in EKS Cluster under the Compute tab.
+    b. Setup an IAM role for the node group 
+        i. AmazonEC2ContainerRegistryReadOnly
+        ii. AmazonEKS_CNI_Policy
+        iii. AmazonEKSWorkerNodePolicy
+    c. Run t3.small because t3.micro doesn't have enough resources to run K8S
+    d. The rest of the defaults can remain
+
+4. Now we can kubectl apply -f <k8s_yaml_files> and test
+
+
+Deploying aws efs csi driver
+    - https://github.com/kubernetes-sigs/aws-efs-csi-driver
+    - kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.3"
+
+Create an EFS
+1. Create a Security Group for EFS
+    a. Go to EC2
+    b. Select Security Groups and Create new Security Group
+    c. Give simple name & description (eks-efs)
+    d. Select our eks vpc
+    e. On Inbound Rules add a new row
+        - NFS type, Custom Source, CIDR of the VPC (192.168.0.0/16)
+    f. Create Security Group
+2. Now go to EFS and Create File System
+    a. Set our eks vpc
+    b. Use all the defaults otherwise
+    c. In availability zones, use our security group we created
+    d. Create File System
+    e. Copy the file system id (fs-0cfbc592ab92ac0e3)
+    f. This file system id is used as the csi volumeHandle in the PersistentVolume definition

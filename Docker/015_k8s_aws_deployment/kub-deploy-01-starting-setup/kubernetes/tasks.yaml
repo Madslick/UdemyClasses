@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata: 
+  name: tasks-service
+spec: 
+  selector:
+    app: tasks
+  type: LoadBalancer  
+  ports: 
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: tasks-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+        - name: tasks-api
+          image: sudojoe/kub-dep-tasks:latest
+          env:
+            - name: MONGODB_CONNECTION_URI
+              value: 'mongodb+srv://sudoj:AWpXWKtqr5GtqLk@mongobongo.4lkfa.mongodb.net/users?retryWrites=true&w=majority'
+            - name: AUTH_API_ADDRESS
+              value: 'auth-service.default:3000'
