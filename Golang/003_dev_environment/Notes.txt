@@ -1,0 +1,38 @@
+Go Workspace
+- bin
+- pkg
+- src
+    - github.com
+        - username
+            - folder with code for project / repo
+
+
+Important ENV Variables
+GOPATH - Points to your go Workspace
+GOROOT - Points to your binary installation of go
+GOBIN - where builds will
+
+Important commands
+go get
+    - go get a package from a repo
+
+go env
+    - Print go environment variables
+
+go version
+    - Prints version
+
+go help 
+    - prints out commands
+
+go fmt
+    - automatically formats code
+    - go fmt ./... does recursive folders apparently?
+
+go run main.go
+    - builds and runs the code
+
+go build
+    - build will drop an executable in your directory
+
+go install main.go

@@ -1,0 +1,10 @@
+version: "3"
+services:
+  golang:
+    build: ./container
+    # environment:
+    #   TOKEN_KEY: ''
+    volumes: 
+      - ./:/go
+    stdin_open: true
+    tty: true
