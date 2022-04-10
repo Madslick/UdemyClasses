@@ -36,3 +36,4 @@ go build
     - build will drop an executable in your directory
 
 go install main.go
+    - Same as go build but will drop it in the $GO/bin directory

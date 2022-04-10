@@ -1,10 +1,14 @@
 version: "3"
 services:
   golang:
-    build: ./container
+    build: ./000_container
     # environment:
     #   TOKEN_KEY: ''
     volumes: 
-      - ./:/go
+      - golang:/go
+      - ssh:/root/.ssh/
     stdin_open: true
     tty: true
+volumes: 
+  golang:
+  ssh:
