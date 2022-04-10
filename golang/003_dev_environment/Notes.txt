@@ -14,7 +14,7 @@ GOBIN - where builds will
 
 Important commands
 go get
-    - go get a package from a repo
+    - go get a package from a repo and
 
 go env
     - Print go environment variables
@@ -33,7 +33,8 @@ go run main.go
     - builds and runs the code
 
 go build
-    - build will drop an executable in your directory
+    - build will drop an executable in your current directory
 
 go install main.go
     - Same as go build but will drop it in the $GO/bin directory
+    - Will build an executable and drop it in your $GOBIN path, /go/bin/
