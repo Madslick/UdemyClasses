@@ -1,0 +1,24 @@
+Schemaless: 
+- To me, this benefit means you dont' have to run a bunch of alter table commands before updating the collection with new data
+- In reality, you either want to just store some extra fields for some documents or keep a tight schema
+
+Embedded vs Relational
+Overall: Heavy write is better for relational. Heavy read is better for embedded.
+
+Another consideration is if the embedded/relational data is used when the parent document is used. 
+If it's not that important to display it, or use it when the parent document is pulled, it can be relational
+
+One to One probably want to embed it
+One to Many depends on the size. If a ton then it's worth making Relational otherwise embedded is findOne
+Many to Many: 
+    This most likely going to be relational but it can be embedded. Example, if you have customers, orders and products. 
+    If orders are embedded, the downside is duplication of data but thing is we want to store the original price the customer paid for it 
+    so it's actually nice that it was embedded.
+
+    If you want data to be updated everywhere whenever something is changed then it makes sense to keep it relational
+ 
+Another approach is to combo:
+Keep another collection with full details AND keep an embedded document with a subset of the fields or only the latest record for quick and easy access
+- The downside of this is when changes are made to the child data, a write needs to happen on the child collection and on the parent document but This
+is a practical approach when you need to read and display a value a lot with the parent data but don't need to update it often. 
+For example, a person's address and historical addresses

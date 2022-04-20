@@ -122,3 +122,46 @@ db.flightsData.updateMany({}, {$set: {status: {description: "on-time", lastUpdat
 ====================
 
 db.passengers.updateOne({name: "Albert Twostone"}, {$set: {hobbies: ["sports", "cooking"]}})
+
+==============
+=== lookup ===
+==============
+lookup notes:
+  - from is the collection
+  - localField is the parent document's ObjectId or objectId's
+  - foreignField is what column this maps to on that referenced collection
+  - as will include it as a column in the result as this keys
+Example Query
+db.books.aggregate([
+    {
+        $lookup: {
+            from : "author", 
+            localField: "authors",
+            foreignField: "_id",
+            as: "creators"
+
+        }
+    }
+])
+
+Example Result
+{
+    "_id": ObjectId("12345"),
+    "name": "Lord of the Rings",
+    "authors": [
+        ObjectId("890"),
+        ObjectId("678")
+    ],
+    "creators": [
+        {
+            "_id": "890",
+            "name": "Joe",
+            "age": 28
+        },
+        {
+            "_id": "678",
+            "name": "JR Tolkien",
+            "age": 280
+        },
+    ]
+}
