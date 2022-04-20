@@ -1,0 +1,124 @@
+
+- Databases/Collections/Documents Created Implicitly
+
+- json vs bson: (Binary JSON).
+    - binary more efficient
+    - stores additional types like ObjectId("string")
+    - 
+
+
+=================
+=    CREATE     =
+=================
+The objects used in mongo don't need to have the quotes around the keys
+
+db.<collection>.insertOne({
+    "departureAirport": "MUC", 
+    "arrivalAirport": "SFO", 
+    "aircraft": "Airbus A380", 
+    "distance": 12000, 
+    "intercontinental": true}
+)
+
+db.flightsData.insertMany(
+    [
+        {
+            "departureAirport": "MUC", 
+            "arrivalAirport": "SFO", 
+            "aircraft": "Airbus A380", 
+            "distance": 12000, 
+            "intercontinental": true
+        },
+        {
+            "departureAirport": "MUC", 
+            "arrivalAirport": "SFO", 
+            "aircraft": "Airbus A380", 
+            "distance": 12000, 
+            "intercontinental": true
+        }
+    ]
+)
+
+========
+= READ =
+========
+db.<collection>.find().pretty()
+db.flightsData.find({
+    intercontinental: true
+})
+db.flightsData.find({
+    distance: {
+        $gt: 10000
+    }
+})
+
+db.<collection>.findOne()
+
+==========
+= UPDATE =
+==========
+- Don't use update - use updateOne, updateMany and replaceOne
+    - Update accepts {marker: "delete"} and will replace the whole object with the value passed 
+    - updateMany will not do this.
+
+db.flightsData.update()
+
+
+db.flightsData.updateMany(
+    {
+        "distance": 12000
+    },
+    {
+        $set: {
+            marker: "delete"
+        }
+    }
+)
+db.<collection>.updateOne(
+    {"_id": ObjectId("someid")},
+    {
+        $set: {
+            marker: "delete"
+        }
+    }
+)
+
+db.<collection>.replaceOne(
+    {"_id": ObjectId("someid")},
+    {
+        "departureAirport": "MUC", 
+        "arrivalAirport": "SFO", 
+        "aircraft": "Airbus A380", 
+        "distance": 12000, 
+        "intercontinental": true,
+        marker: "delete"
+    }
+)
+
+==========
+= DELETE =
+==========
+db.<collection>.deleteOne({"_id: ObjectId("asldkfasdkf")})
+db.<collection>.deleteMany({marker: "delete"})
+
+
+=======================
+===   Projection    ===
+=======================
+Projection is taken as an option and 1 says include, 0 says exclude
+
+db.passengers.find({}, {name: 1, _id: 0}).pretty()
+
+
+===============================
+===    Embedded Documents   ===
+===============================
+db.flightsData.find({"status.details": "on-time"}) // dot notation
+db.flightsData.updateMany({}, {$set: {status: {description: "on-time", lastUpdated: "1 hour ago"}}})
+
+
+====================
+===    Arrays   ===
+====================
+
+db.passengers.updateOne({name: "Albert Twostone"}, {$set: {hobbies: ["sports", "cooking"]}})
