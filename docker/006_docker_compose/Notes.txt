@@ -1,0 +1,17 @@
+===========================================
+===       docker-compose commands       ===
+===========================================
+docker-compose build to build new images
+
+docker-compose up --detach will build a network, setup all the configurations in the docker-compose.yml and get the containers running
+Docker-compose down will delete any anonymous volumes and networks
+
+docker-compose start will just turn the existing containers on
+docker-compose stop will just stop the containers and power them down
+
+
+
+To connect to the shell of a container you need this in the container definition
+stdin_open: true
+tty: true
+
