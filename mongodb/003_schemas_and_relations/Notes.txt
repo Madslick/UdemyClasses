@@ -22,3 +22,18 @@ Keep another collection with full details AND keep an embedded document with a s
 - The downside of this is when changes are made to the child data, a write needs to happen on the child collection and on the parent document but This
 is a practical approach when you need to read and display a value a lot with the parent data but don't need to update it often. 
 For example, a person's address and historical addresses
+
+
+JOINING - LOOKUP
+db.collection.aggregate(
+    [
+        {
+            $lookup:{
+                from: "collection2", // Which other collection?
+                localField: "authors", // Which property of collection 1
+                foreignField: "_id", 
+                as: "newFieldInResult" // Holds the lookup property
+            }
+        }
+    ]
+)

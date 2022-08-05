@@ -1,0 +1,16 @@
+Aggregation works in stages. Each stage receives the output of the previous stage
+
+1. Match: match the documents in the result, (filter)
+    - Filter & Sort here and take advantage of indexes
+    - db.persons.aggregate([
+        {
+            $match: {
+                // All traditional find filter functionality works here
+            }
+        }
+    ])
+2. Sort
+3. Group
+    * Group by a field or multiple fields
+4. Project
+
